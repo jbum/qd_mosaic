@@ -1,0 +1,10 @@
+attic/*
+bdata/*
+jdata/*
+renders/*
+samples/*
+sets/*
+targets/*
+thumbs/*
+*.pyc
+test*
