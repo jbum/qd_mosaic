@@ -15,7 +15,7 @@ python make_thumbs.py -n 2000 bdata/shorts.bin
 # python make_thumbs.py -inv -n 2000 bdata/shorts.bin  # inverted
 
 # step 3. build the mosaic (use pypy or something faster if you can)
-python build_mosaic.py sets/shorts.txt targets/grace_2.png -novars -max 800 -v
+python build_mosaic.py thumbs/shorts.txt targets/grace_2.png -novars -max 800 -v
 
 # step 4. build the svg
 python render_mosaic_svg.py jdata/shorts_grace_2_mosaick.json renders/test.svg

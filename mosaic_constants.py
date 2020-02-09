@@ -1,6 +1,6 @@
 render_path = "renders"
 json_path = "jdata"
-set_path = "sets"
+set_path = "thumbs"
 thumbs_path = "thumbs"
 bdata_path = "bdata"
 
