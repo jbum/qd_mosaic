@@ -1,7 +1,7 @@
 Mosaic builder for building photomosaic-style mosaics intended for use with pen plotters.
 
-![Karloff](https://github.com/jbum/qd_mosaics/samples/stitchesi_karloff3_25_x_38_c20.jpg "Stitches Karloff")
-![Grace](https://github.com/jbum/qd_mosaics/samples/zigzag_grace_2_33_x_29_c20.jpg "Zigzag Grace")
+![Karloff](https://github.com/jbum/qd_mosaics/blob/master/samples/stitchesi_karloff3_25_x_38_c20.jpg "Stitches Karloff")
+![Grace](https://github.com/jbum/qd_mosaics/blob/master/samples/zigzag_grace_2_33_x_29_c20.jpg "Zigzag Grace")
 
 Currently works with images from the Quick Draw dataset at https://quickdraw.withgoogle.com/data
 
