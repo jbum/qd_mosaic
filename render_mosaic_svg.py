@@ -2,7 +2,6 @@
 # 
 
 '''
-Needs to be tweaked to find all relevant bin files (and understand my i notation)
 '''
 
 import argparse, json, os, re, sys
@@ -51,10 +50,12 @@ for fimg in finalimages:
 margin = args.pts_per_tile
 pw, ph = (hcells*args.pts_per_tile+margin*2, vcells*args.pts_per_tile+margin*2)
 svg_document = svgwrite.Drawing(filename = args.svg_file,
-                                size = ("%dpx" % (pw), "%dpx" % (ph)))
+                                size = ("%dpx" % (pw), "%dpx" % (ph)),
+                                debug = False)  # debug = false makes it MUCH faster
+svg_drawing = svg_document.g(stroke='black',fill='none')
 
 def render_drawing_cell(cell, drec):
-    global svg_drawing, svg_document
+    global svg_document
 
     (tx, ty, do_flop) = (cell['x'], cell['y'], cell['flop'])
     (px, py) = (margin+tx*args.pts_per_tile, margin+ty*args.pts_per_tile)
@@ -63,10 +64,15 @@ def render_drawing_cell(cell, drec):
     miny = min([min([y for y in yvecs]) for xvecs, yvecs in drec['image']])
     maxy = max([max([y for y in yvecs]) for xvecs, yvecs in drec['image']])
     w, h = (1+maxx-minx, 1+maxy-miny)
-    ox = (256 - w)/2
-    oy = (256 - h)/2
+    ox = (256 - w)/2.0
+    oy = (256 - h)/2.0
     sc = args.pts_per_tile / 256.0
 
+    # g = svg_document.g(transform="translate(%.1f %1.f)" % (px, py))
+    # precompute translate followed by scale
+    sx,sy = (sc,sc)
+    # g = svg_document.g(transform="matrix(%.2f 0 0 %.2f %.2f %.2f)" % (sx,sy,px,py))
+    g = svg_document.g()
     for xvecs,yvecs in drec['image']:
         # centered, flopped and scaled coords
         tuples = [(px+(ox+(x if not do_flop else maxx-x))*sc,py+(oy+yvecs[i])*sc) for i, x in enumerate(xvecs)]
@@ -79,8 +85,9 @@ def render_drawing_cell(cell, drec):
             else:
                 dpath += ", %.1f,%.1f" % (x,y)
         # print dpath
-        svg_drawing.add(svg_document.path(d=dpath))
+        g.add(svg_document.path(d=dpath))
         # draw.line(tuples, fill='black', width=pen_width)
+    return g
 
 def unpack_drawing(file_handle):
     key_id, = unpack('Q', file_handle.read(8))
@@ -129,13 +136,30 @@ for key,known_ids in bset_dict.items():
         got_it = False
         for cell in cells:
             if thumb_nom in finalimages[cell['iIdx']]['desc']:
-                render_drawing_cell(cell, drawing)
+                g = render_drawing_cell(cell, drawing)
+                cell['gpath'] = g
                 got_it = True
         if not got_it:
             print "Could not find %s for %s %d" % (thumb_nom,key,i)
         if i >= max_id:
             break
 print "adding drawing"
+
+# do 4 corner cells first, to insure paper isn't skewed too bad
+preview_cells = (0,hcells-1,(vcells-1)*hcells,(vcells-1)*hcells+hcells-1)
+for paddr in preview_cells:
+    cell = cells[paddr]
+    svg_drawing.add(cell['gpath'])
+
+# do remaining cells in an optimal order
+for y in range(vcells):
+    is_rev = (y % 2) != 0
+    for x in range(hcells):
+        addr = y*hcells + ((hcells-(x+1)) if is_rev else x)
+        if addr in preview_cells:
+            continue
+        cell = cells[addr]
+        svg_drawing.add(cell['gpath'])
 svg_document.add(svg_drawing)
 print "saving svg"
 svg_document.save()
