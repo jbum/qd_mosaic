@@ -15,7 +15,6 @@ parser.add_argument('-vv', '--vverbose', default=False, action='store_true', hel
 parser.add_argument('-t', '--test', default=False, action='store_true', help='Test - no actual commands are run')
 parser.add_argument('-f', '--force', default=False, action='store_true', help='Force image override')
 parser.add_argument('-n', '--nbr', type=int, default=20000, help='Test - no actual commands are run')
-# parser.add_argument('-dt', '--draw_thumbs', default=False, action='store_true', help='Draw Thumbs to thumbs/ directory')
 parser.add_argument('-d', '--dump_full', default=False, action='store_true', help='Dump info')
 parser.add_argument('-td', '--thumbs_dir', help='Thumbs dir (default uses name derived from file)')
 parser.add_argument('-i', '-inv', '--invert', default=False, action='store_true', help='Invert (for white ink on black)')
@@ -110,7 +109,7 @@ root_nom = args.infile.replace(".bin", "").replace(bdata_path+'/','')
 if args.ofile:
     setfile = args.ofile
 else:
-    setfile = args.infile.replace(".bin",".txt").replace(bdata_path+'/',set_path+('/i' if args.invert else '/'))
+    setfile = args.infile.replace(".bin",".txt").replace(bdata_path+'/',set_path+'/'+('i-' if args.invert else ''))
 
 
 with open(setfile,"w") as ofile:
