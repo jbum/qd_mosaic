@@ -1,10 +1,10 @@
 attic/*
-bdata/*
-jdata/*
-renders/*
-samples/*
-sets/*
-targets/*
-thumbs/*
+bdata/*.bin
+jdata/*.json
+renders/*.jpg
+renders/*.png
+renders/*.svg
+sets/*.txt
+thumbs/*/*.png
 *.pyc
 test*
