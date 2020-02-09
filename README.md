@@ -8,8 +8,8 @@ Currently works with images from the Quick Draw dataset at https://quickdraw.wit
 Scripts
 ```
 make_sample.sh       # make a sample mosaic from scratch
-get_desired_bins.py  # download a collection of bin files from quickdraw
-dump_qds.py          # produce raster thumbnail images for an image set and a photoset file.
+get_bins.py          # download a collection of bin files from quickdraw
+make_thumbs.py       # produce raster thumbnail images for an image set and a photoset file.
 build_mosaic.py      # photomosaic builder - ported from code from my book Flickr Hacks
 
 
@@ -23,12 +23,12 @@ render_mosaic_svg.py # render mosaic data from a json file to an SVG
 
 Directories
 ```
-thumbs\               # thumbnails are stored here - new sub-directories made by dump_qds
+thumbs\               # thumbnails are stored here - new sub-directories made by make_thumbs
 bdata\                # binary files are placed here by get_desired_bins.py
 jdata\                # json tile layouts are placed here by build_mosaic
 renders\              # preview images are placed here by build_mosaic
 samples\              # some sample output
-sets\                 # photolists used by build_mosaic and output by dump_qds
+sets\                 # photolists used by build_mosaic and output by make_thumbs
 targets\              # target photos
 
 ```

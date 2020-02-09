@@ -2,9 +2,14 @@
 #
 import struct, argparse, os, sys
 from struct import unpack
-from mosaic_constants import bdata_path, set_path, thumbs_path
+from mosaic_constants import bdata_path, set_path, thumbs_path, thumb_pen_width
 
-parser = argparse.ArgumentParser(description='Read bin file')
+from PIL import Image, ImageDraw, ImageFont
+from PIL import ImageFilter
+
+pen_width = thumb_pen_width 
+
+parser = argparse.ArgumentParser(description='Make thumbnails from a binfile')
 parser.add_argument('-v', '--verbose', default=False, action='store_true', help='Verbose')
 parser.add_argument('-vv', '--vverbose', default=False, action='store_true', help='Very Verbose')
 parser.add_argument('-t', '--test', default=False, action='store_true', help='Test - no actual commands are run')
@@ -19,11 +24,13 @@ parser.add_argument('infile',help='File to read')
 args = parser.parse_args()
 
 if args.thumbs_dir == None:
-    td = args.infile.replace(".bin","").(bdata_path+'/', thumbs_path+'/')
+    td = args.infile.replace(".bin","").replace(bdata_path+'/', thumbs_path+'/'+('i-' if args.invert else ''))
 else:
     td = args.thumbs_dir
+
 if td[-1] == '/':
     td = td[0:-1]
+
 if not os.path.isdir(td):
     if os.path.exists(td):
         print td + " is a file (not a directory)"
@@ -65,23 +72,6 @@ def unpack_drawings(filename):
             except struct.error:
                 break
 
-'''
-
-'image': [(
-             (107, 132, 137, 160, 178, 182, 182, 187, 235, 254, 253, 242, 197, 213, 241, 236, 195, 176, 152, 135, 129, 121, 87, 82, 74, 73, 79, 88, 105, 30, 9, 0, 8, 68, 100, 108), 
-             (79, 6, 0, 36, 58, 67, 75, 77, 58, 45, 56, 79, 137, 157, 212, 212, 194, 181, 158, 132, 154, 170, 217, 221, 221, 195, 161, 143, 120, 114, 110, 104, 99, 88, 79, 73))],
-
-'image': [((91, 47, 42, 91, 126, 148), 
-           (115, 204, 221, 199, 174, 154)), 
-          ((137, 177, 189, 199, 197), 
-           (156, 201, 220, 230, 125)), 
-          ((194, 254), (122, 116)), 
-          ((252, 217, 167), (113, 90, 74)), ((77, 61, 0), (112, 113, 100)), ((6, 82), (99, 56)), ((78, 95, 109, 144, 170), (63, 14, 0, 28, 71))]
-'''
-
-from PIL import Image, ImageDraw, ImageFont
-from PIL import ImageFilter
-pen_width = 15 # this is intended to simulate a medium pen stroke, if the 256x256 drawing occupies about 1/4 inch sq.
 
 def draw_thumb(drec, fname):
     if os.path.exists(fname) and not args.force:
@@ -115,12 +105,12 @@ def draw_thumb(drec, fname):
     # print "Saved %s %d %d" % (fname, w, h)
 
 
-root_nom = args.infile.replace(".bin", "")
+root_nom = args.infile.replace(".bin", "").replace(bdata_path+'/','')
 
 if args.ofile:
     setfile = args.ofile
 else:
-    setfile = args.infile.replace(".bin",".txt").(bdata_path+'/',set_path+'/')
+    setfile = args.infile.replace(".bin",".txt").replace(bdata_path+'/',set_path+'/i')
 
 
 with open(setfile,"w") as ofile:
@@ -132,7 +122,7 @@ with open(setfile,"w") as ofile:
         # print(drawing['countrycode'])
         out_fname = "%s_%d.png" % (root_nom, i+1)
         draw_thumb(drawing,"%s/%s" % (args.thumbs_dir,out_fname)) # this will skip output if file exists
-        ofile.write("%s%s/%s\n" % (('i' if args.invert else ''),root_nom,out_fname))
+        ofile.write("%s%s/%s\n" % (('i-' if args.invert else ''),root_nom,out_fname))
         if i % 1000 == 0:
             print i
         if i+1 == args.nbr:
