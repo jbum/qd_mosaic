@@ -1,6 +1,6 @@
 Mosaic builder for building photomosaic-style mosaics intended for use with pen plotters.
 
-![Karloff](samples/stitchesi_karloff3_25_x_38_c20.jpg " ")
+![Karloff](samples/stitchesi_karloff3_25_x_38_c20.jpg | width=100)
 ![Grace](samples/zigzag_grace_2_33_x_29_c20.jpg " ")
 
 Currently works with images from the Quick Draw dataset at https://quickdraw.withgoogle.com/data
