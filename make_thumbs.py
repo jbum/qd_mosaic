@@ -19,7 +19,7 @@ parser.add_argument('-d', '--dump_full', default=False, action='store_true', hel
 parser.add_argument('-td', '--thumbs_dir', help='Thumbs dir (default uses name derived from file)')
 parser.add_argument('-i', '-inv', '--invert', default=False, action='store_true', help='Invert (for white ink on black)')
 parser.add_argument('-o', '--ofile', help="Output txt file override")
-parser.add_argument('infile',help='File to read')
+parser.add_argument('infile',help='Bin file to read doodles from')
 args = parser.parse_args()
 
 if args.thumbs_dir == None:
