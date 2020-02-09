@@ -1,5 +1,8 @@
 Mosaic builder for building photomosaic-style mosaics intended for use with pen plotters.
 
+![Karloff](https://github.com/jbum/qd_mosaics/samples/stitchesi_karloff3_25_x_38_c20.jpg "Stitches Karloff")
+![Grace](https://github.com/jbum/qd_mosaics/samples/zigzag_grace_2_33_x_29_c20.jpg "Zigzag Grace")
+
 Currently works with images from the Quick Draw dataset at https://quickdraw.withgoogle.com/data
 
 Scripts
@@ -21,6 +24,11 @@ render_mosaic_svg.py # render mosaic data from a json file to an SVG
 Directories
 ```
 thumbs\               # thumbnails are stored here - new sub-directories made by dump_qds
-
+bdata\                # binary files are placed here by get_desired_bins.py
+jdata\                # json tile layouts are placed here by build_mosaic
+renders\              # preview images are placed here by build_mosaic
+samples\              # some sample output
+sets\                 # photolists used by build_mosaic and output by dump_qds
+targets\              # target photos
 
 ```
