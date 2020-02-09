@@ -23,12 +23,11 @@ render_mosaic_svg.py # render mosaic data from a json file to an SVG
 
 Directories
 ```
-thumbs\               # thumbnails are stored here - new sub-directories made by make_thumbs
+thumbs\               # thumbnails and set files are stored here by make_thumbs
 bdata\                # binary files are placed here by get_desired_bins.py
 jdata\                # json tile layouts are placed here by build_mosaic
 renders\              # preview images are placed here by build_mosaic
 samples\              # some sample output
-sets\                 # photolists used by build_mosaic and output by make_thumbs
 targets\              # target photos
 
 ```
