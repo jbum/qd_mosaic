@@ -7,6 +7,13 @@ Currently works with images from the Quick Draw dataset at https://quickdraw.wit
 
 This code is derived from code used to make raster photomosaics originally written for the book Flickr Hacks. I've added additional scripts to produce raster thumbnail previews of what the various doodles look like when drawn in black or white ink.  These thumbnails are used by the build_mosaic script to construct a raster photomosaic in the usual way (by selecting thumbnails that match the desired target picture).  Once the appropriate doodles are selected, information about the tileset is output to a JSON file and a JPG preview is made from the thumbnails.  The saved JSON data can then be used, in conjunction with the original binary files from Quick Draw, to produce an SVG which can be plotted.
 
+Required software packages:
+```
+PIL/Pillow 2.0+       (https://pypi.org/project/Pillow/)
+svgwrite   1.0+       (https://pypi.org/project/svgwrite/)
+gsutil                (see https://cloud.google.com/storage/docs/gsutil_install)
+```
+
 Scripts
 ```
 make_sample.sh       # make a sample mosaic from scratch (illustrates use of the following 4 scripts)
