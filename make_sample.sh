@@ -24,9 +24,6 @@ python render_mosaic_svg.py jdata/shorts_grace_2_mosaick.json renders/test.svg
 # example of mosaic using multiple symbols
 # ..use steps 1 and 2 to download individual sets you want.
 # ...then extract some of each into a single file (called multi3.txt in this example)
-# head -5000 thumbs/flower.txt >thumbs/multi3.txt
-# head -5000 thumbs/angel.txt >>thumbs/multi3.txt
-# head -5000 thumbs/bird.txt >>thumbs/multi3.txt
-# ...and use the multi3.txt file for the build step...
-# python build_mosaic.py thumbs/multi3.txt targets/grace_2.png -novars -max 800 -v
-# python render_mosaic_svg.py jdata/multi3_grace_2_mosaick.json renders/test.svg
+# python mix_thumbs.py line circle zigzag stitches hurricane -o thumbs/abstract.txt
+# python build_mosaic.py thumbs/abstract.txt targets/grace_2.png -novars -max 800 -v
+# python render_mosaic_svg.py jdata/abstract_grace_2_mosaick.json renders/test.svg
