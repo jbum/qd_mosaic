@@ -16,10 +16,11 @@ gsutil                (see https://cloud.google.com/storage/docs/gsutil_install)
 
 Scripts
 ```
-make_sample.sh       # make a sample mosaic from scratch (illustrates use of the following 4 scripts)
+make_sample.sh       # make a sample mosaic from scratch (illustrates use of the following scripts)
 
 get_bins.py          # download a collection of bin files from quickdraw
 make_thumbs.py       # produce raster thumbnail images for an image set
+mix_thumbs.py        # mix thumb lists into compound lists for mosaics with multiple symbols
 build_mosaic.py      # photomosaic builder - reads thumbnails and outputs a JPG preview and JSON layout.
 render_mosaic_svg.py # render mosaic data from a json layout file to an SVG
 
