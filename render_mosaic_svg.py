@@ -143,7 +143,7 @@ for key,known_ids in bset_dict.items():
             print "Could not find %s for %s %d" % (thumb_nom,key,i)
         if i >= max_id:
             break
-print "adding drawing"
+print("adding drawing")
 
 # do 4 corner cells first, to insure paper isn't skewed too bad
 preview_cells = (0,hcells-1,(vcells-1)*hcells,(vcells-1)*hcells+hcells-1)
@@ -161,7 +161,7 @@ for y in range(vcells):
         cell = cells[addr]
         svg_drawing.add(cell['gpath'])
 svg_document.add(svg_drawing)
-print "saving svg"
+print("saving svg")
 svg_document.save()
 
 

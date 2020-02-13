@@ -5,33 +5,33 @@ import sys, os, subprocess, json
 class ImageSet:
     # These need to be implemented by sub-classes   
     def makeFilePath(self, idx, minWidth):
-        print "ABSTRACT makeFilePath"
+        print("ABSTRACT makeFilePath")
         return ""
 
     def getImage(self, idx, minWidth):
-        print "ABSTRACT getImage"
+        print("ABSTRACT getImage")
 
     def getRGBImage(self, idx, minWidth):
         img = self.getImage(idx, minWidth)
         return img.convert("RGB")
 
     def getImageWebpage(self, idx):
-        print "ABSTRACT getImageWebpage"
+        print("ABSTRACT getImageWebpage")
         return ""
 
     def getImageDesc(self, idx):
         return "Image %d" % (idx)
 
     def getImageDupeID(self, idx):
-        print "ABSTRACT getImageDupeID"
+        print("ABSTRACT getImageDupeID")
         return idx
 
     def getImageID(self, idx):
-        print "ABSTRACT getImageID"
+        print("ABSTRACT getImageID")
         return idx
 
     def getMaxImages(self):
-        print "ABSTRACT getMaxImages"
+        print("ABSTRACT getMaxImages")
         return 0
 
     def getImageForce(self, idx):
@@ -71,9 +71,9 @@ class ListSet(ImageSet):
         try:
           return Image.open(self.makeFilePath(idx, minWidth))
         except IOError:
-          print "Image not found: %s" % (self.makeFilePath(idx, minWidth))
+          print("Image not found: %s" % (self.makeFilePath(idx, minWidth)))
           if (self.cacheRoot == ''):
-            print " (consider supplying -cacheroot)"
+            print(" (consider supplying -cacheroot)")
           sys.exit()
 
     def getImageDesc(self, idx):
@@ -109,21 +109,21 @@ class FlickrSet(ImageSet):
     def makeFilePath(self, idx, minWidth):
         suffix = '_t' if minWidth <= 50 else ''
         if idx >= len(self.photos):
-            print "idx %d not in photos len=%d" % (idx,len(self.photos))
+            print("idx %d not in photos len=%d" % (idx,len(self.photos)))
             return ''
         return self.makeLocalPath(self.photos[idx], suffix)
 
     def getImage(self, idx, minWidth):
         fname = self.makeFilePath(idx, minWidth)
-        # print "getImage: ", fname
+        # print("getImage: " + fname)
         if fname == '':
             return None
         if (not os.path.exists(fname) or os.path.getsize(fname) < 50) and self.downloadsOK:
           if os.path.exists(fname):
-            print "Image %s seems small at %d bytes" % (fname, os.path.getsize(fname))
+            print("Image %s seems small at %d bytes" % (fname, os.path.getsize(fname)))
           self.downloadImage(idx, minWidth)
         if not os.path.exists(fname):
-            print "DID NOT DOWNLOAD, downloadsOK = ",self.downloadsOK
+            print("DID NOT DOWNLOAD, downloadsOK = " + self.downloadsOK)
             return None
         return Image.open(fname)
 
@@ -197,7 +197,7 @@ class FlickrSet(ImageSet):
         l_path = self.makeFilePath(idx, minWidth)
         self.buildDirs(l_path)
         if self.verbose:
-            print "Downloading %s --> %s" % (r_path, l_path)
+            print("Downloading %s --> %s" % (r_path, l_path))
         f = open(l_path,"wb")
         subprocess.call(['curl', '-s', r_path], stdout=f)
         f.close()

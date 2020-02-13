@@ -35,7 +35,7 @@ if not os.path.isdir(td):
         print td + " is a file (not a directory)"
         sys.exit()
     else:
-        print "Making directory ",td
+        print("Making directory " + td)
         os.mkdir(td)
 args.thumbs_dir = td
 

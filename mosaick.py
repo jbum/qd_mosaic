@@ -55,8 +55,8 @@ class Mosaick:
         self.filter     = Image.ANTIALIAS  # NEAREST, BICUBIC, BILINEAR, ANTIALIAS is best for color averaging
 
         # computed
-        print "Quality = %d" % (self.quality)
-        print "Mixin = %d" % (self.mixin)
+        print("Quality = %d" % (self.quality))
+        print("Mixin = %d" % (self.mixin))
 
         if self.hmode and self.cspace == 0:
             self.cspace = 8
@@ -67,7 +67,7 @@ class Mosaick:
         self.reso2 = self.resoX * self.resoY
         self.tileAspectRatio = self.resoX / float(self.resoY)
         self.minDupeDist2 = self.minDupeDist ** 2
-        print "Min Dupe Dist ^2 = ",self.minDupeDist2
+        print("Min Dupe Dist ^2 = %d" % (self.minDupeDist2))
 
 
         self.basename = self.basepic
@@ -81,7 +81,7 @@ class Mosaick:
         self.finalimages = []
         self.images = []
 
-        print "Done Mosaic Init"
+        print("Done Mosaic Init")
 
     def setupCells(self):
         cells = []
@@ -103,17 +103,17 @@ class Mosaick:
             self.resoX = 1 
           self.resoY = int(self.resoX / self.tileAspectRatio)
           self.reso2 = self.resoX * self.resoY
-          print "Forcing Reso to %d x %d due to lack of resolution in target image" % (self.resoX, self.resoY)
+          print("Forcing Reso to %d x %d due to lack of resolution in target image" % (self.resoX, self.resoY))
         elif self.resoY * self.vcells > h:
           self.resoY = int(h / self.vcells)
           if self.resoY < 1:
               self.resoY = 1
           self.resoX = int(self.resoY * self.tileAspectRatio)
           self.reso2 = self.resoX * self.resoY
-          print "Forcing Reso to %d x %d due to lack of resolution in target image" % (self.resoX, self.resoY)
+          print("Forcing Reso to %d x %d due to lack of resolution in target image" % (self.resoX, self.resoY))
         if self.verbose:
-            print "Original Image Width %d x %d" % (w,h)
-            print "Allocating Cell Data %dx%d x %dx%d (AR=%.2f)" % (self.hcells, self.vcells, self.resoX, self.resoY, self.tileAspectRatio)
+            print("Original Image Width %d x %d" % (w,h))
+            print("Allocating Cell Data %dx%d x %dx%d (AR=%.2f)" % (self.hcells, self.vcells, self.resoX, self.resoY, self.tileAspectRatio))
 
         # this makes baseimg, and baseimg2 clones of srcimg, but converted specifically to RGB space
         # baseimg = Image.open(self.basepic)
@@ -129,7 +129,7 @@ class Mosaick:
 
         if not self.hmode:
           # normal mode
-          print "Walking Pixels"
+          print("Walking Pixels")
           i = 0
           for y in range(self.vcells):
             outputStr = '' # '\033[7m'
@@ -163,7 +163,7 @@ class Mosaick:
               cells.append(cell)
               i += 1
             outputStr += "\033[0m"
-            print outputStr
+            print(outputStr)
 
         else:
           # hmode - overlapping cells - experimental
@@ -189,7 +189,7 @@ class Mosaick:
               i += 1
 
             if outputStr != '':
-              print outputStr
+              print(outputStr)
 
         self.cells = cells
 
@@ -200,7 +200,7 @@ class Mosaick:
           # sort cells here
           self.sortedcells = sorted(cells, key=itemgetter('e'), reverse=True)
 
-        print "Done setup cells"
+        print("Done setup cells")
 
     def getEdginess(self,cell):
         pix = cell['pix']
@@ -231,11 +231,11 @@ class Mosaick:
 
 
     def makeHeatmap(self, filename):
-        print "Making heatmap"
+        print("Making heatmap")
         if not self.sortedcells:
             self.setupCells()
             if not self.sortedcells:
-                print "Problem setting up cells for heatmap"
+                print("Problem setting up cells for heatmap")
                 return
 
         width = self.resoX * self.hcells
@@ -263,12 +263,12 @@ class Mosaick:
         images = []
         maxImages = self.imageset.getMaxImages()
         if self.verbose:
-          print "Sampling %d source images..." % (maxImages)
+          print("Sampling %d source images..." % (maxImages))
         maxReso = max(self.resoX,self.resoY)
         for idx in range(maxImages):
             image = self.imageset.getRGBImage(idx, maxReso)
             if image == None:
-                print "Bad Image!!"
+                print("Bad Image!!")
             w,h = image.size
             badImage = False
             if self.noborders:
@@ -285,13 +285,13 @@ class Mosaick:
               if d1 <= 0.007 or d2 <= 0.007 or float(w)/h >= 2 or float(h)/w >= 2:
                 badImage = True
                 if self.verbose:
-                  print '.'
+                  print('.')
 
             if not badImage:
               i2 = image.resize((1,1), self.filter)
               # FIX THIS
               rgb = list(image.getdata())[0]
-              # print "RGB",rgb,image.size,self.imageset.makeFilePath(idx,'')
+              # print("RGB",rgb,image.size,self.imageset.makeFilePath(idx,''))
               l = getHaeberliLuminance(rgb)
               photo = {'idx':idx, 'l':l}
               if self.hasForces:
@@ -299,8 +299,8 @@ class Mosaick:
               images.append(photo)
 
             if self.verbose and (idx+1) % 500 == 0:
-              print "%d..." % (idx+1)
-        print "Got %d images, %.2f secs to sample" % (len(images), floatseconds(dt.datetime.now() - startTime))
+              print("%d..." % (idx+1))
+        print("Got %d images, %.2f secs to sample" % (len(images), floatseconds(dt.datetime.now() - startTime)))
 
         self.images = images
 
@@ -314,7 +314,7 @@ class Mosaick:
             if v > 0 and not self.usevars:
                 continue
             image = self.getCroppedPhoto(photo['idx'], self.resoX, v)
-            # print "Resizing image to ",self.resoX,self.resoY
+            # print("Resizing image to ",self.resoX,self.resoY)
             image = image.resize((self.resoX, self.resoY), self.filter)
             # !! convert to grayscale if necessary...
             if self.grayscale:
@@ -325,7 +325,7 @@ class Mosaick:
     def getCroppedPhoto(self, idx, resoX, var):
         image = self.imageset.getRGBImage(idx,resoX)
         if not image:
-          print "Problem getting image %d" % (idx)
+          print("Problem getting image %d" % (idx))
           return None
 
         # crop to square
@@ -363,7 +363,7 @@ class Mosaick:
         lIdx = -1
         n = 0
         if self.verbose:
-            print "Sorting %d images for luminance" % (len(self.images))
+            print("Sorting %d images for luminance" % (len(self.images)))
         for j,img in enumerate(self.images):
           if int(img['l']*255) != lIdx:
             lIdx = int(img['l']*255)
@@ -374,7 +374,7 @@ class Mosaick:
           iIndex.append(j)
           n += 1
         if self.verbose:
-            print "Lumindex has %d entries" % (n)
+            print("Lumindex has %d entries" % (n))
         self.iIndex = iIndex
 
     def getMinDupeDist2(self, img, x, y):
@@ -401,7 +401,7 @@ class Mosaick:
         # esum = sum([(p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2 + (p1[2] - p2[2]) ** 2 for p1,p2 in zip(pix1,pix2)])
 
         esum = 0
-        for i in xrange(self.reso2):   # note using zip here is slightly slower
+        for i in range(self.reso2):   # note using zip here is slightly slower
             esum += (pix1[i][0] - pix2[i][0]) ** 2 + (pix1[i][1] - pix2[i][1]) ** 2 + (pix1[i][2] - pix2[i][2]) ** 2
             if upperBound > 0 and esum > upperBound:
                 break
@@ -421,7 +421,7 @@ class Mosaick:
         numImages = len(self.images)
         lastImageIdx = numImages-1
         if self.verbose:
-            print "Selecting from %d images... %d cells" % (numImages, len(self.sortedcells)) 
+            print("Selecting from %d images... %d cells" % (numImages, len(self.sortedcells)) )
 
         self.buildLumIndex()
 
@@ -536,15 +536,15 @@ class Mosaick:
           i += 1
 
           if i % 100 == 0 and self.verbose:
-            print "%d..." % (i)
+            print("%d..." % (i))
 
         # end
-        print "Done selection pass, elapsed: %.2f seconds" % (floatseconds(dt.datetime.now() - startTime))
-        print "Max Lum Err: %.1f   Max Diff: %d" % (maxLumErr * 256, maxDiff)
+        print("Done selection pass, elapsed: %.2f seconds" % (floatseconds(dt.datetime.now() - startTime)))
+        print("Max Lum Err: %.1f   Max Diff: %d" % (maxLumErr * 256, maxDiff))
 
         if self.hasForces:
           iq = [p for p in self.images if 'placed' not in p and p['force'] and 'pix' in p ]
-          print "Adding %d forces" % (len(iq))
+          print("Adding %d forces" % (len(iq)))
 
           while len(iq) > 0:
             image = iq.pop(0)
@@ -563,13 +563,13 @@ class Mosaick:
                 nbrPlacedForces += 1
             
             if (cIdx == -1):
-              print "No Cell match!  minDiff = %d" % (minDiff)
+              print("No Cell match!  minDiff = %d" % (minDiff))
             else:
               cell = self.cells[cIdx] # $self->{cells}->[$cIdx];
               #       if a force photo is already there, push it to end of queue
               if cell['img']['force']:
                 iq.append(cell['img'])
-                print "Repush";
+                print("Repush")
               #  place new photo there
               cell['img'] = image;
               cell['flop'] = False
@@ -611,10 +611,10 @@ class Mosaick:
 
       while len(unplacedImages) > 0 and nbrImagesMatched < maxImages:
         hPass += 1
-        print "Pass ",hPass
+        print("Pass " + hPass)
         nbrUnplaced = 0
         for i in range(min(self.hlimit,len(unplacedImages))):
-          print " placing image",i
+          print(" placing image %d" % (i))
           image = unplacedImages[i]
           if 'placed' in image:
             continue
@@ -635,7 +635,7 @@ class Mosaick:
             if not overlaps:
               fimages.append(image)
               image['placed'] = True
-              print "Placed an image"
+              print("Placed an image")
               nbrImagesMatched += 1
               if nbrImagesMatched >= maxImages:
                 break
@@ -646,7 +646,7 @@ class Mosaick:
 
               continue
             else:
-              print "Image",i,"overlaps, replacing"
+              print("Image %d overlaps, replacing" % (i))
 
           nbrUnplaced += 1
           minDiff = -1
@@ -730,7 +730,7 @@ class Mosaick:
         open(savefilename, "w").write(json.dumps(sdata, indent=4))
 
     def makeMosaic(self):
-        print "Making mosaic"
+        print("Making mosaic")
         if not self.finalimages:
           if self.load:
             self.loadData()
@@ -745,9 +745,9 @@ class Mosaick:
 
         if not self.cellsize:
           if not self.minWidth or not self.minHeight:
-            print "No output dimension defined"
+            print("No output dimension defined")
             return
-          print "No explicit cellsize defined"
+          print("No explicit cellsize defined")
           outputAspectRatio = self.minWidth / float(self.minHeight)
           if self.targetAspectRatio < outputAspectRatio:
             self.cellsize = int(self.minHeight / self.vcells / self.tileAspectRatio)
@@ -768,7 +768,7 @@ class Mosaick:
         width = cellsizeX * self.hcells
         height = cellsizeY * self.vcells
         if self.verbose:
-            print "Image Dimensions will be %d x %d (tiles = %dx%d pixels)" % (width, height, cellsizeX, cellsizeY)
+            print("Image Dimensions will be %d x %d (tiles = %dx%d pixels)" % (width, height, cellsizeX, cellsizeY))
         maxCellsize = max(cellsizeX,cellsizeY)
         # htmlName = re.sub(r'\.jpg', '.html', self.filename)
 
@@ -836,7 +836,7 @@ class Mosaick:
         # open(htmlName, "w").write(markup)
 
         if self.mixin > 0 and not self.tint:
-          print "Mixing in %d%%..." % (self.mixin)
+          print("Mixing in %d%%..." % (self.mixin))
           bgpic = Image.open(self.basepic).resize((width, height), self.filter)
           mask = Image.new("L",(width,height),int(self.mixin*255/100))
           mosaic.paste(bgpic,(0,0),mask)
@@ -848,7 +848,7 @@ class Mosaick:
             mosaic.save(self.pngname)
           
         if self.verbose:
-            print "Saving JPEG %s" % (self.filename)
+            print("Saving JPEG %s" % (self.filename))
         mosaic.save(self.filename, quality=self.quality)
 
 def floatseconds(dt):

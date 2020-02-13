@@ -14,13 +14,15 @@ args = parser.parse_args()
 # https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/binary
 
 def do_command(cmd):
-	print cmd
+	if args.verbose:
+		print(cmd)
 	if not args.test:
 		subprocess.check_call(cmd, shell=True)
 
 
 for dbin in args.bins:
-	print "Getting",dbin
+	if args.verbose:
+		print("Getting " + dbin)
 	ifilename = dbin.replace(' ','\\ ') + ".bin"
 	ofilename = bdata_path + '/' + dbin.replace(' ','_') + '.bin'
 	if os.path.exists(ofilename):

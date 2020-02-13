@@ -85,10 +85,10 @@ else:
                        'cacheRoot': args.cacheroot,
                       } )
 
-print "Images: %d"  % (imageSet.getMaxImages())
+print("Images: %d"  % (imageSet.getMaxImages()))
 
 rootname = re.sub(r'\.\w+$', '', args.pfile).replace(set_path+'/','')
-print "rootname =",rootname
+print("rootname =" + rootname)
 
 moz = Mosaick({'resoX': args.resox,
               'resoY': args.resoy,
@@ -130,5 +130,5 @@ if (args.heatmap):
   sys.exit()
 
 moz.makeMosaic()
-print "Done making mosaic" # !! include timing info
+print("Done making mosaic") # !! include timing info
 
