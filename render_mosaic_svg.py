@@ -19,7 +19,7 @@ parser.add_argument('svg_file', help='SVG file to output')
 args = parser.parse_args()
 
 if not os.path.exists(args.json_file):
-    print "%s not found" % (args.json_file)
+    print("%s not found" % (args.json_file))
 
 sdata = json.loads(open(args.json_file).read())
 
@@ -120,10 +120,10 @@ def unpack_drawings(filename):
                 break
 
 for key,known_ids in bset_dict.items():
-    print "reading",key
+    print("reading " + key)
     bin_file = "%s/%s.bin" % (bdata_path,key)
     if not os.path.exists(bin_file):
-        print "%s not found" % (bin_file)
+        print("%s not found" % (bin_file))
         sys.exit()
 
     max_id = max(known_ids)
@@ -140,7 +140,7 @@ for key,known_ids in bset_dict.items():
                 cell['gpath'] = g
                 got_it = True
         if not got_it:
-            print "Could not find %s for %s %d" % (thumb_nom,key,i)
+            print("Could not find %s for %s %d" % (thumb_nom,key,i))
         if i >= max_id:
             break
 print("adding drawing")

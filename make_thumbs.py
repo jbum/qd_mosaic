@@ -32,7 +32,7 @@ if td[-1] == '/':
 
 if not os.path.isdir(td):
     if os.path.exists(td):
-        print td + " is a file (not a directory)"
+        print(td + " is a file (not a directory)")
         sys.exit()
     else:
         print("Making directory " + td)
@@ -123,6 +123,6 @@ with open(setfile,"w") as ofile:
         draw_thumb(drawing,"%s/%s" % (args.thumbs_dir,out_fname)) # this will skip output if file exists
         ofile.write("%s%s/%s\n" % (('i-' if args.invert else ''),root_nom,out_fname))
         if i % 1000 == 0:
-            print i
+            print("%d" %(i))
         if i+1 == args.nbr:
             break

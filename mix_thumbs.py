@@ -19,7 +19,7 @@ if args.nbr == None:
 	args.nbr = 1 + 20000 // len(args.sets)
 
 def do_command(cmd):
-	print cmd
+	print(cmd)
 	if not args.test:
 		subprocess.check_call(cmd, shell=True)
 
