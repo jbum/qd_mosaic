@@ -20,6 +20,7 @@ def do_command(cmd):
 
 
 for dbin in args.bins:
+	print "Getting",dbin
 	ifilename = dbin.replace(' ','\\ ') + ".bin"
 	ofilename = bdata_path + '/' + dbin.replace(' ','_') + '.bin'
 	if os.path.exists(ofilename):
