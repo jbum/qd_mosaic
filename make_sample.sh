@@ -5,7 +5,7 @@
 
 # step 1 - get desired binfiles (about 20 megs each)
 #
-python get_bins.py shorts
+python get_bins.py 'shorts'
 
 # 
 # step 2 - convert these into thumbnails  (use -inv if you are planning on using light ink on dark paper)
